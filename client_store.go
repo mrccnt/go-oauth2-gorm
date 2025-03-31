@@ -3,23 +3,18 @@ package oauth2gorm
 import (
 	"context"
 	"encoding/json"
-	"io"
-	"os"
-	"time"
-
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/models"
 	"gorm.io/gorm"
+	"io"
+	"os"
 )
 
 type ClientStoreItem struct {
-	ID        string
-	Secret    string `gorm:"type:varchar(512)"`
-	Domain    string `gorm:"type:varchar(512)"`
-	Data      string `gorm:"type:text"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID     string
+	Secret string `gorm:"type:varchar(512)"`
+	Domain string `gorm:"type:varchar(512)"`
+	Data   string `gorm:"type:text"`
 }
 
 func NewClientStore(table string, db *gorm.DB) *ClientStore {

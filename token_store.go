@@ -14,8 +14,7 @@ import (
 )
 
 type TokenStoreItem struct {
-	gorm.Model
-
+	ID        uint `gorm:"primarykey"`
 	ExpiredAt int64
 	Code      string `gorm:"type:varchar(512)"`
 	Access    string `gorm:"type:varchar(512)"`
