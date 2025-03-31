@@ -1,13 +1,16 @@
-module src.techknowlogick.com/oauth2-gorm
+module github.com/mrccnt/oauth2-gorm
+
+go 1.23.0
+
+toolchain go1.23.1
 
 require (
-	github.com/go-oauth2/oauth2/v4 v4.2.0
-	github.com/smartystreets/goconvey v1.6.4
-	gorm.io/driver/mysql v1.0.1
-	gorm.io/driver/postgres v1.0.1
-	gorm.io/driver/sqlite v1.1.3
-	gorm.io/driver/sqlserver v1.0.4
-	gorm.io/gorm v1.20.1
+	github.com/go-oauth2/oauth2/v4 v4.5.2
+	gorm.io/gorm v1.25.12
 )
 
-go 1.14
+require (
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
+	golang.org/x/text v0.23.0 // indirect
+)

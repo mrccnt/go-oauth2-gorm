@@ -23,33 +23,11 @@ type TokenStoreItem struct {
 	Data      string `gorm:"type:text"`
 }
 
-// NewStore create mysql store instance,
-func NewTokenStore(config *Config, gcInterval int) *TokenStore {
-
-	db, err := gorm.Open(config.Dialector, defaultConfig)
-	if err != nil {
-		panic(err)
-	}
-	// default client pool
-	s, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	s.SetMaxIdleConns(10)
-	s.SetMaxOpenConns(100)
-	s.SetConnMaxLifetime(time.Hour)
-
-	return NewTokenStoreWithDB(config, db, gcInterval)
-}
-
-func NewTokenStoreWithDB(config *Config, db *gorm.DB, gcInterval int) *TokenStore {
+func NewTokenStore(table string, db *gorm.DB, gcInterval int) *TokenStore {
 	store := &TokenStore{
 		db:        db,
-		tableName: "oauth2_token",
+		tableName: table,
 		stdout:    os.Stderr,
-	}
-	if config.TableName != "" {
-		store.tableName = config.TableName
 	}
 	interval := 600
 	if gcInterval > 0 {
@@ -67,7 +45,7 @@ func NewTokenStoreWithDB(config *Config, db *gorm.DB, gcInterval int) *TokenStor
 	return store
 }
 
-// Store mysql token store
+// TokenStore mysql token store
 type TokenStore struct {
 	tableName string
 	db        *gorm.DB
@@ -81,7 +59,7 @@ func (s *TokenStore) SetStdout(stdout io.Writer) *TokenStore {
 	return s
 }
 
-// Close close the store
+// Close closes the store
 func (s *TokenStore) Close() {
 	s.ticker.Stop()
 }
@@ -89,7 +67,7 @@ func (s *TokenStore) Close() {
 func (s *TokenStore) errorf(format string, args ...interface{}) {
 	if s.stdout != nil {
 		buf := fmt.Sprintf(format, args...)
-		s.stdout.Write([]byte(buf))
+		_, _ = s.stdout.Write([]byte(buf))
 	}
 }
 
@@ -110,7 +88,7 @@ func (s *TokenStore) gc() {
 	}
 }
 
-// Create create and store the new token information
+// Create creates and store the new token information
 func (s *TokenStore) Create(ctx context.Context, info oauth2.TokenInfo) error {
 	jv, err := json.Marshal(info)
 	if err != nil {

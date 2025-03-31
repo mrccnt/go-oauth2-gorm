@@ -1,0 +1,20 @@
+# https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml
+# https://golangci-lint.run/usage/linters/
+
+issues:
+  fix: true
+
+linters:
+  enable:
+    - typecheck
+    - asasalint
+    - errorlint
+    - gocognit
+    - gocritic
+    - gocyclo
+    - mnd
+    - gosec
+    - revive
+    - stylecheck
+    - usestdlibvars
+    - gofmt
